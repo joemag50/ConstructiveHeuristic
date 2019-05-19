@@ -20,6 +20,7 @@ public class ConstructiveHeuristic {
     private final String filename;
     private final double[][] matrixDistances;
     private final int p;
+    private final int all_sites;
     private ArrayList<ArrayList<Double>> distancesClientsSites = new ArrayList<>();
 
     ConstructiveHeuristic(String filename, int p, ArrayList<ArrayList<Double>> distancesClientsSites) {
@@ -27,6 +28,7 @@ public class ConstructiveHeuristic {
         this.filename = filename;
         this.p = p;
         this.distancesClientsSites = distancesClientsSites;
+        this.all_sites = distancesClientsSites.get(0).size();
         double[][] matrixDistances = new double[distancesClientsSites.size()][];
         for (int i = 0; i < matrixDistances.length; i++) {
             matrixDistances[i] = new double[distancesClientsSites.get(i).size()];
@@ -188,21 +190,26 @@ public class ConstructiveHeuristic {
             }
 
             FileWriter writer = new FileWriter(file);
-
-            writer.write(String.format("%s\n\n", this.p));
-
+            String flag = String.format("%s %s\n\n", this.all_sites, this.p);
+            writer.write(flag.trim());
+            writer.write(String.format("\n\n"));
+            
+            flag = "";
             for (int facility : selectedFacilities) {
-                writer.write(String.format("%s", facility));
-                writer.write("\n");
+            	flag += String.format("%s ", facility);
             }
-            writer.write(String.format("\n"));
+            writer.write(flag.trim());
+            writer.write(String.format("\n\n"));
 
-            for (int j = 0; j < matrixDistances.length; j++) {
-                for (int k = 0; k < matrixDistances[0].length; k++) {
-                    writer.write(String.format("%.2f ", matrixDistances[j][k]));
+            flag = "";
+            for (int j = 0; j < clientsFacilities.size(); j++) {
+                for (int k = 0; k < clientsFacilities.get(j).size(); k++) {
+                	flag += String.format("%s ", clientsFacilities.get(j).get(k));
                 }
-                writer.write("\n");
+                flag = flag.trim();
+                flag += "\n";
             }
+            writer.write(flag);
             writer.close();
         } catch (IOException e1) {
             // TODO Auto-generated catch block
