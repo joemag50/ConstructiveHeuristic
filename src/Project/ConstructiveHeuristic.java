@@ -207,6 +207,8 @@ public class ConstructiveHeuristic {
 			writer.write(String.format("%.2f ", this.distance_total ));
 			writer.write("\n\n");
 			writer.write(String.format("%s", totalTime ));
+			writer.write("\n\n");
+			writer.write(String.format("%s %s %s", maximumDistance, farthestFacility, farthestClient));
 
 			writer.close();
 		} catch (IOException e1) {
