@@ -61,21 +61,35 @@ public class ConstructiveHeuristic {
 			boolean firstOne = true;
 			int farthestClient = 0;
 			double farthestClientDistance = 0.0;
-			double temporalFarthestClientDistance = 0.0;
+//            double temporalFarthestClientDistance = 0.0;
 
 			//3.a. Select the farthest client to the facilities in selectedFacilities
-			for (int facility : selectedFacilities) {
-				for (int client = 0; client < matrixDistances.length; client++) {
-					if (firstOne == true) {
-						farthestClient = client;
-						farthestClientDistance = matrixDistances[client][facility];
-						firstOne = false;
-					} else {
+			for (int client = 0; client < matrixDistances.length; client++) {
+				boolean firstFactility = true;
+				int temporalFarthestClient = 0;
+				double temporalFarthestClientDistance = 0.0;
+				double temporalClientDistance = 0.0;
+				for (int facility : selectedFacilities) {
+					if (firstFactility == true) {
+						temporalFarthestClient = client;
 						temporalFarthestClientDistance = matrixDistances[client][facility];
-						if (temporalFarthestClientDistance > farthestClientDistance) {
-							farthestClient = client;
-							farthestClientDistance = matrixDistances[client][facility];
+						firstFactility = false;
+					} else {
+						temporalClientDistance = matrixDistances[client][facility];
+						if (temporalClientDistance < temporalFarthestClientDistance) {
+							temporalFarthestClient = client;
+							temporalFarthestClientDistance = matrixDistances[client][facility];
 						}
+					}
+				}
+				if (firstOne == true) {
+					farthestClient = temporalFarthestClient;
+					farthestClientDistance = temporalFarthestClientDistance;
+					firstOne = false;
+				} else {
+					if (temporalFarthestClientDistance > farthestClientDistance) {
+						farthestClient = temporalFarthestClient;
+						farthestClientDistance = temporalFarthestClientDistance;
 					}
 				}
 			}
